@@ -1,5 +1,5 @@
-const PEOPLE_BY_PAGE_URL = "http://swapi.dev/api/people/?page=1";
-const SEARCH_POPLE_BY_NAME_URL = 'http://swapi.dev/api/people/?search=';
+const PEOPLE_BY_PAGE_URL = "https://swapi.dev/api/people/?page=1";
+const SEARCH_POPLE_BY_NAME_URL = 'https://swapi.dev/api/people/?search=';
 
 const buttonLoad = document.querySelector(".button-load");
 const content = document.querySelector(".content-load");
