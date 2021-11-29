@@ -7,6 +7,12 @@
     background-color: #56CCF2;
 }
 
+.search{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 20px;
+    color: #fff;
+}
 .logo {
     padding: 18px 0 17px 39px;
     font-family: Roboto;
@@ -26,6 +32,7 @@
 
 .button-load {
     background: #391FA4;
+    cursor: pointer;
     border-radius: 3px;
     padding: 11px 71px 10px 71px;
     font-family: Roboto;
@@ -34,6 +41,11 @@
     font-size: 24px;
     line-height: 28px;
     color: #fff;
+}
+
+.button-load[disabled] {
+    cursor: default;
+    background: grey;
 }
 
 .rounded {
