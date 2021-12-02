@@ -4,8 +4,8 @@ const buttonLoad = document.querySelector(".button-load");
 const content = document.querySelector(".content-load");
 const page = document.querySelector(".page");
 const searchInput = document.getElementById("searchInput");
-const buttonNext = document.getElementById("button-previous");
-const buttonPrevious = document.getElementById("button-next");
+const buttonPrevious = document.getElementById("button-previous");
+const buttonNext = document.getElementById("button-next");
 
 let nextURL = "";
 let previousURL = "";
@@ -95,7 +95,7 @@ function addContent(people, page) {
   let ol = document.createElement("ol");
   ol.className = "rounded";
   div.append(ol);
-  content.append(div);
+  content.prepend(div);
 
   people.results.forEach((item, i) => {
     let li = document.createElement("li");
@@ -126,28 +126,6 @@ function addContent(people, page) {
         addInfo(people, li, item.name);
       }
     });
-  });
-
-  let buttonNext = document.createElement("button");
-  buttonNext.className = "button-load";
-  buttonNext.id = "button-next";
-  buttonNext.append("Next");
-  buttonNext.style.float = "right";
-  let buttonPrevious = document.createElement("button");
-  buttonPrevious.className = "button-load";
-  buttonPrevious.append("Previous");
-  buttonPrevious.id = "button-previous";
-  buttonPrevious.style.float = "left";
-  div.append(buttonNext);
-  div.append(buttonPrevious);
-
-  buttonNext.addEventListener("click", (event) => {
-    event.preventDefault();
-    pageCheck(true, buttonNext);
-  });
-  buttonPrevious.addEventListener("click", (event) => {
-    event.preventDefault();
-    pageCheck(false, buttonPrevious);
   });
 
   setNext();
