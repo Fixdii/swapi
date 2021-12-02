@@ -3,8 +3,9 @@ const PEOPLE_BY_PAGE_URL = "https://swapi.dev/api/people/";
 const buttonLoad = document.querySelector(".button-load");
 const content = document.querySelector(".content-load");
 const page = document.querySelector(".page");
-
-let searchInput;
+const searchInput = document.getElementById("searchInput");
+const buttonNext = document.getElementById("button-previous");
+const buttonPrevious = document.getElementById("button-next");
 
 let nextURL = "";
 let previousURL = "";
@@ -22,14 +23,7 @@ function getPage(url) {
 }
 
 function countPage(allPages, currentPage) {
-  page.textContent =
-    "page" +
-    " " +
-    currentPage +
-    " " +
-    "of" +
-    "  " +
-    Math.ceil(allPages.count / 10);
+  page.textContent = `page ${currentPage} of ${Math.ceil(allPages.count / 10)}`;
 }
 
 function getSearch(url) {
@@ -68,11 +62,7 @@ function setNext(nextUrl = nextURL) {
     return;
   }
 
-  if (!nextUrl) {
-    buttonNext.disabled = true;
-  } else {
-    buttonNext.disabled = false;
-  }
+  buttonNext.disabled = !nextUrl;
 }
 
 function setPrev(prevUrl = previousURL) {
@@ -83,11 +73,7 @@ function setPrev(prevUrl = previousURL) {
     return;
   }
 
-  if (!prevUrl) {
-    buttonPrevious.disabled = true;
-  } else {
-    buttonPrevious.disabled = false;
-  }
+  buttonPrevious.disabled = !prevUrl;
 }
 
 function loadContent(people, page) {
@@ -97,7 +83,7 @@ function loadContent(people, page) {
   allPages = people.count;
 
   const divForDelete = content.firstChild;
-  if(divForDelete){
+  if (divForDelete) {
     divForDelete.remove();
   }
 
@@ -190,40 +176,8 @@ function addInfo(people, li, name) {
   });
 }
 
-function pageCheck(isNext, btn) {
-  if (isNext) {
-    if (!!nextURL) {
-      loadPageContent(nextURL);
-    } else {
-    }
-  } else {
-    if (!!previousURL) {
-      loadPageContent(previousURL);
-    } else {
-    }
-  }
-}
-
-function init() {
-  loadPageContent();
-
-  searchInput = document.getElementById("searchInput");
-
-  searchInput.addEventListener("input", (event) => {
-    const requestURL = `${PEOPLE_BY_PAGE_URL}?search=${searchInput.value}`;
-    const page = getPage(requestURL);
-
-    sendRequest(requestURL)
-      .then((people) => {
-        loadContent(people, page);
-        countPage(people, page);
-      })
-      .catch((err) => {
-        if (err.message !== "wrongSearch") {
-          console.error(err);
-        }
-      });
-  });
+function pageCheck(isNext) {
+  isNext ? loadPageContent(nextURL) : loadPageContent(previousURL);
 }
 
 function loadPageContent(url = PEOPLE_BY_PAGE_URL) {
@@ -237,4 +191,30 @@ function loadPageContent(url = PEOPLE_BY_PAGE_URL) {
     .catch((err) => console.error(err));
 }
 
-window.addEventListener("DOMContentLoaded", () => init());
+searchInput.addEventListener("input", (event) => {
+  const requestURL = `${PEOPLE_BY_PAGE_URL}?search=${searchInput.value}`;
+  const page = getPage(requestURL);
+
+  sendRequest(requestURL)
+    .then((people) => {
+      loadContent(people, page);
+      countPage(people, page);
+    })
+    .catch((err) => {
+      if (err.message !== "wrongSearch") {
+        console.error(err);
+      }
+    });
+});
+
+buttonNext.addEventListener("click", (event) => {
+  event.preventDefault();
+  pageCheck(true, buttonNext);
+});
+
+buttonPrevious.addEventListener("click", (event) => {
+  event.preventDefault();
+  pageCheck(false, buttonPrevious);
+});
+
+window.addEventListener("DOMContentLoaded", () => loadPageContent());
